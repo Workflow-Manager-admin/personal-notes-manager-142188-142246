@@ -1,0 +1,105 @@
+---
+const { note, onSave, onCancel } = Astro.props;
+import { useState } from 'react';
+
+const [title, setTitle] = useState(note.title);
+const [content, setContent] = useState(note.content);
+
+// PUBLIC_INTERFACE
+function handleSubmit(e) {
+  e.preventDefault();
+  onSave(note.id, title, content);
+}
+---
+
+<form class="note-editor" onSubmit={handleSubmit}>
+  <label>
+    Title
+    <input
+      value={title}
+      onInput={(e) => setTitle(e.target.value)}
+      placeholder="Note title"
+      required
+      maxlength="80"
+      class="note-title"
+      autoFocus
+    />
+  </label>
+  <label>
+    Content
+    <textarea
+      value={content}
+      onInput={(e) => setContent(e.target.value)}
+      rows={8}
+      class="note-content"
+      placeholder="Write your note here"
+    ></textarea>
+  </label>
+  <div class="editor-actions">
+    <button type="submit" class="save-btn">Save</button>
+    <button type="button" class="cancel-btn" onClick={onCancel}>Cancel</button>
+  </div>
+</form>
+
+<style>
+.note-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1em;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 2.2em 1.8em;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  max-width: 600px;
+  margin: 2vh auto 0 auto;
+}
+.note-title {
+  font-size: 1.24em;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+  padding: 0.6em 0.9em;
+}
+.note-content {
+  margin-top: 0.45em;
+  font-size: 1em;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+  padding: 0.6em 0.9em;
+  resize: vertical;
+}
+.editor-actions {
+  display: flex;
+  gap: 1.2em;
+  justify-content: flex-end;
+  margin-top: 1em;
+}
+.save-btn {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.3em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.17s;
+}
+.save-btn:hover {
+  background: #115293;
+}
+.cancel-btn {
+  background: #fff;
+  color: #424242;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.cancel-btn:hover {
+  background: #f6f6f6;
+}
+</style>
