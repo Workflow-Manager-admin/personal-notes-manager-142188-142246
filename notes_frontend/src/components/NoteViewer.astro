@@ -1,0 +1,72 @@
+---
+const { note, onEdit } = Astro.props;
+---
+
+<div class="note-viewer">
+  <div class="viewer-header">
+    <h2 class="note-title">{note.title || 'Untitled'}</h2>
+    <button class="edit-btn" onClick={onEdit}>Edit</button>
+  </div>
+  <article class="note-content">
+    {note.content || <span class="empty-note">No content yet.</span>}
+  </article>
+  <div class="viewer-footer">
+    <span class="viewer-date">
+      Last updated:{" "}
+      {new Date(note.updated).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+    </span>
+  </div>
+</div>
+
+<style>
+.note-viewer {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  padding: 2.1em 2em 1.7em 2em;
+  margin: 2vh auto 0 auto;
+  max-width: 600px;
+}
+.viewer-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.6em;
+}
+.note-title {
+  font-size: 1.45em;
+  font-weight: 600;
+  margin: 0;
+}
+.edit-btn {
+  background: #ffb300;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 0.4em 1.1em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.14s;
+}
+.edit-btn:hover {
+  background: #ffa000;
+}
+.note-content {
+  font-size: 1.06em;
+  color: var(--text-color);
+  min-height: 80px;
+  margin-bottom: 1.5em;
+  white-space: pre-wrap;
+}
+.empty-note {
+  color: #bcbcbc;
+  font-style: italic;
+}
+.viewer-footer {
+  font-size: 0.91em;
+  color: #b2b2b2;
+  margin-top: 1em;
+  text-align: right;
+}
+</style>

@@ -1,0 +1,100 @@
+---
+const { notes, selectedNoteId, onNoteSelect, onNoteDelete, onNoteEdit } = Astro.props;
+---
+
+<ul class="sidebar-list">
+  {notes.length === 0
+    ? <li class="sidebar-empty">No notes yet.</li>
+    : notes.map((note) => (
+        <li
+          class={`sidebar-note${selectedNoteId === note.id ? ' selected' : ''}`}
+          key={note.id}
+          tabindex={0}
+          onClick={() => onNoteSelect(note.id)}
+        >
+          <div class="sidebar-note-inner">
+            <span class="title">{note.title || 'Untitled'}</span>
+            <span class="note-actions">
+              <button
+                class="icon-btn"
+                title="Edit"
+                onClick={(e) => { e.stopPropagation(); onNoteEdit(note.id); }}
+              >✎</button>
+              <button
+                class="icon-btn"
+                title="Delete"
+                onClick={(e) => { e.stopPropagation(); onNoteDelete(note.id); }}
+              >🗑</button>
+            </span>
+          </div>
+          <div class="updated">
+            {new Date(note.updated).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+          </div>
+        </li>
+      ))}
+</ul>
+
+<style>
+.sidebar-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0 0 0;
+}
+.sidebar-empty {
+  color: var(--text-secondary);
+  opacity: 0.7;
+  padding: 1.5rem;
+  text-align: center;
+}
+.sidebar-note {
+  padding: 0.7rem 1.1rem 0.35rem 1.1rem;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  background: transparent;
+  font-size: 1rem;
+  transition: background 0.14s, border-color 0.18s;
+  outline: none;
+  user-select: none;
+}
+.sidebar-note.selected,
+.sidebar-note:focus {
+  border-left: 4px solid #ffb300;
+  background: #e3effc;
+}
+.sidebar-note-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sidebar-note .title {
+  color: #424242;
+  font-weight: 500;
+  max-width: 124px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.note-actions {
+  display: flex;
+  gap: 0.2rem;
+}
+.icon-btn {
+  background: none;
+  color: #1976d2;
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.15em 0.25em;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.13s;
+}
+.icon-btn:hover {
+  background: #e3effc;
+  color: #ffb300;
+}
+.updated {
+  font-size: 0.77rem;
+  color: #b7b7b7;
+  padding-left: 0.5rem;
+}
+</style>
